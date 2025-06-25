@@ -60,12 +60,23 @@
         transform: translateY(-6px);
         box-shadow: 0 12px 36px rgba(219, 39, 119, 0.3);
       }
-      .card img {
+      .card > .img-container {
+        min-width: 180px;
         width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 1rem;
+        min-height: 180px;
+        height: 100vh;
+        max-height: 380px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
         margin-bottom: 1rem;
+      }
+      .img-container img {
+        border-radius: 1rem;
+        max-width: 380px;
+        max-height: 380px;
+        object-fit: cover;
         box-shadow: 0 6px 20px rgba(219, 39, 119, 0.2);
       }
       .card h3 {
@@ -159,10 +170,12 @@
             >
               Contoh gambar yang baik
             </summary>
-              <div class="flex gap-3 flex-wrap mt-4 justify-center item-center p-6">
-                <img src="static/images/gambar2.jpg" class="w-48"/>
-                <img src="static/images/gambar5.jpg" class="w-48"/>
-              </div>
+            <div
+              class="flex gap-3 flex-wrap mt-4 justify-center item-center p-6"
+            >
+              <img src="static/images/gambar2.jpg" class="w-48" />
+              <img src="static/images/gambar5.jpg" class="w-48" />
+            </div>
           </details>
         </div>
         <a class="back-btn" href="/">Kembali</a>
@@ -170,23 +183,33 @@
       {% else %}
 
       <h2>Hasil Rekomendasi untuk Skin Tone: {{ result.skin_tone }}</h2>
-
       {% if result.undertone %}
       <p class="undertone">Undertone yang cocok: {{ result.undertone }}</p>
       {% else %}
       <p class="no-data">Tidak ada data pengetahuan untuk skin tone ini.</p>
+      {% endif %} {% if result.undertone %}
+      <div style="text-align: center; margin-bottom: 30px">
+        {{result.description}}
+      </div>
       {% endif %} {% if result.recommendations %}
       <div class="cards">
         {% for recommendation in result.recommendations %}
         <div class="card">
-          <img
-            src="/static/uploads/products/{{ recommendation.image }}"
-            alt="{{ recommendation.name }}"
-            loading="lazy"
-          />
+          <div class="img-container">
+            <img
+              src="/static/uploads/products/{{ recommendation.image }}"
+              alt="{{ recommendation.name }}"
+              loading="lazy"
+            />
+          </div>
           <h3>{{ recommendation.category }}</h3>
           <p>{{ recommendation.name }}</p>
-          <p><em>Untuk tone: {{ recommendation.skin_tone + "/" + recommendation.undertone }}</em></p>
+          <p>
+            <em
+              >Untuk tone: {{ recommendation.skin_tone + "/" +
+              recommendation.undertone }}</em
+            >
+          </p>
         </div>
         {% endfor %}
       </div>
